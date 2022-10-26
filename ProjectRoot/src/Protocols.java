@@ -8,8 +8,7 @@ public class Protocols {
   private static Map<Integer, Infos> tcp = new HashMap<>();
   private static Map<Integer, Infos> http = new HashMap<>();
 
-  public Protocols() {
-  }
+  public Protocols() {  }
 
   public Infos getEthernetInfos (int id) {
     return ethernet.get(id);

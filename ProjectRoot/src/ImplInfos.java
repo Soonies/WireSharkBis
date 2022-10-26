@@ -77,4 +77,8 @@ public class ImplInfos implements Infos {
     return this.type;
   }
 
+  @Override
+  public String toString() {
+    return "type='" + getType()+"'";
+  }
 }

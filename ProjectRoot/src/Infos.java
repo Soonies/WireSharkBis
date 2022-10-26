@@ -20,4 +20,5 @@ public interface Infos {
   public String getField(String field);
   public String getType();
   
+  public String toString();
 }
