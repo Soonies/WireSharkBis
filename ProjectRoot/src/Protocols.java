@@ -1,45 +1,52 @@
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Protocols {
 
-  private static Map<Integer, IInfos> ethernet = new HashMap<>();
-  private static Map<Integer, IInfos> ipv4 = new HashMap<>();
-  private static Map<Integer, IInfos> tcp = new HashMap<>();
-  private static Map<Integer, IInfos> http = new HashMap<>();
+  private static Map<Integer, Infos> ethernet = new HashMap<>();
+  private static Map<Integer, Infos> ipv4 = new HashMap<>();
+  private static Map<Integer, Infos> tcp = new HashMap<>();
+  private static Map<Integer, Infos> http = new HashMap<>();
 
-  public Protocols() {  }
+  public Protocols() {
+  }
 
-  public IInfos getEthernetInfos (int id) {
+  public Infos getEthernetInfos(int id) {
     return ethernet.get(id);
   }
 
-  public IInfos getHttpInfos (int id) {
+  public Infos getHttpInfos(int id) {
     return http.get(id);
   }
 
-  public IInfos getTcpInfos (int id) {
+  public Infos getTcpInfos(int id) {
     return tcp.get(id);
   }
 
-  public IInfos getIpv4Infos (int id) {
+  public Infos getIpv4Infos(int id) {
     return ipv4.get(id);
   }
 
-  public void addEthernetInfos (int id, IInfos infos) {
-    ethernet.put(id, infos);
+  public static void addInfos(int idTrame, Infos infos, String protocol) {
+    switch (protocol) {
+      case "ethernet":
+        ethernet.put(idTrame, infos);
+        break;
+      case "ipv4":
+        ipv4.put(idTrame, infos);
+        break;
+      case "tcp":
+        tcp.put(idTrame, infos);
+        break;
+      case "http":
+        http.put(idTrame, infos);
+        break;
+      default:
+        throw new InvalidParameterException("Protocol invalide: " + protocol);
+    }
   }
 
-  public void addHttpInfos (int id, IInfos infos) {
-    http.put(id, infos);
-  }
 
-  public void addTcpInfos (int id, IInfos infos) {
-    tcp.put(id, infos);
-  }
-
-  public void addIpv4Infos (int id, IInfos infos) {
-    ipv4.put(id, infos);
-  }
 
 }

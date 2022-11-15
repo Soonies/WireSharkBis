@@ -4,11 +4,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class Infos implements IInfos {
+public class Infos {
   private final String type;
   private Map<String, String> hashInfos = null;
 
-  private List<String> header = null; // TOUT sauf header internet
+  private String[] header = null; // TOUT sauf header internet
   private List<Character> headerHttpClair = null;
 
   private final String formatEthernet_fields = "macDst macSrc next",
@@ -31,7 +31,7 @@ public class Infos implements IInfos {
    * @param type
    * @param header
    */
-  public Infos(String type, List<String> header) {
+  public Infos(String type, String[] header) {
     this.type = type;
     this.header = header;
 
@@ -90,8 +90,9 @@ public class Infos implements IInfos {
    * 
    * @param fields   ( formatEthernet_fields, ...)
    * @param nbOctets ( formatEthernet_nbOctets, ...)
-   * @return HashTable with all fields filled out depending of the (based on
-   *         this.header)
+   * @return HashTable with all fields filled out (based on this.header and the
+   *         String f
+   *         )
    */
   private Map<String, String> makeHash(String fields, String nbOctets) {
 
@@ -114,20 +115,20 @@ public class Infos implements IInfos {
     return hash;
   }
 
-  @Override
+  
   public void hashEthernet() {
     Map<String, String> hash = makeHash(formatEthernet_fields, formatEthernet_nbOctets);
     this.hashInfos = hash;
   }
 
-  @Override
+ 
   public void hashIpv4() {
     Map<String, String> hash = makeHash(formatIpv4_fields, formatIpv4_nbOctets);
     this.hashInfos = hash;
 
   }
 
-  @Override
+ 
   public void hashTcp() {
     Map<String, String> hash = makeHash(formatTcp_fields, formatTcp_nbOctets);
     this.hashInfos = hash;
@@ -157,7 +158,6 @@ public class Infos implements IInfos {
   }
 
   // !!!
-  @Override
   public void hashHttp() {
     translateBinaryToAscii();
     int i = findNewLineChar();
@@ -173,22 +173,21 @@ public class Infos implements IInfos {
 
   }
 
-  @Override
+
   public void setInfos(String field, String data) {
     this.hashInfos.replace(field, data);
   }
 
-  @Override
+
   public Map<String, String> getInfos() {
     return this.hashInfos;
   }
 
-  @Override
+
   public String getField(String field) {
     return this.hashInfos.get(field);
   }
 
-  @Override
   public String getType() {
     return this.type;
   }

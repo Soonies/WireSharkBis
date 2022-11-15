@@ -2,16 +2,27 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 
 public class Parser {
   private File f;
 
   public Parser(File f) {
-    this.f = f;    
+    this.f = f;
+    init();
   }
-  
-  private String hexToBin(String hex) {
+
+
+  private void init() {
+    try{
+      splitInput();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    
+    
+  }
+
+  private static String hexToBin(String hex) {
     hex = hex.replaceAll("0", "0000");
     hex = hex.replaceAll("1", "0001");
     hex = hex.replaceAll("2", "0010");
@@ -31,88 +42,207 @@ public class Parser {
     return hex;
   }
 
-  /**
+  /*
    * 
    * @throws IOException
+   * 
+   * public void splitInput() throws IOException {
+   * StringBuilder trame = new StringBuilder();
+   * 
+   * BufferedReader br = new BufferedReader(new FileReader(f));
+   * 
+   * for(String line = br.readLine() ; line != null ; line = br.readLine() ) {
+   * 
+   * if(!(line == "\n")){
+   * for(int i=6; i<line.length(); i++){
+   * if(line.charAt(i) != ' ' || line.charAt(i+1) != ' '){
+   * trame.append(line.charAt(i));
+   * }
+   * else{
+   * trame.append(" ");
+   * break;
+   * }
+   * }
+   * }
+   * 
+   * else{
+   * new Trame(trame.toString());
+   * trame = new StringBuilder();
+   * }
+   * 
+   * }
+   * 
+   * br.close();
+   * }
    */
-  public void splitInput() throws IOException {
-    StringBuilder trame = new StringBuilder();
 
-    BufferedReader br = new BufferedReader(new FileReader(f));
+  private static String[] formateTrame(String t) {
+    String lignes[] = t.split("\n");
+    String s = "";
+    for (String l : lignes) {
 
-    for(String line = br.readLine() ; line != null ; line = br.readLine() ) {
-
-      if(!(line == "\n")){
-        for(int i=6; i<line.length(); i++){
-          if(line.charAt(i) != ' ' || line.charAt(i+1) != ' '){
-            trame.append(line.charAt(i));
-          }
-          else{
-            trame.append(" ");
-            break;
-          }
-        }
-      }
-
-      else{
-        new Trame(trame.toString());
-        trame = new StringBuilder();
-      }
-
+      s += l.substring(6, 54) + " ";
     }
-    
-    br.close();
+
+    return hexToBin(s).split(" ");
   }
 
-
-
-  
   /**
-   * @returns Tableau [next_protocol ; longueur du header (format String)]
+   * instancie toutes les trames du fichier
+   * @throws IOException
    */
-  public String[] observateurHttp( int indexDebutEntete, int idTrame) {
-     Trame t  =  Trame.getTrame(idTrame);
-    List<String> tContent  = t.getContent() ; 
-    
-     next_protocol = 
+  private void splitInput() throws IOException {
+    StringBuilder sb = new StringBuilder();
+
+    BufferedReader br = new BufferedReader(new FileReader(this.f));
+
+    for (String line = br.readLine(); line != null; line = br.readLine()) {
+      sb.append(line + "\n");
+    }
+    String text = "" + sb;
+    String[] lsTrames = text.split("\n\n");
+
+    for (String t : lsTrames) {
+      String[] trame = formateTrame(t);
+      new Trame(trame);
+    }
+
+    br.close();
+
   }
-  
-  public String[] observateurTcp(int indexDebutEntete, int idTrame) {
+
+  /**
+   * @returns Le Tableau {next_protocol ; longueur du header en octet(format String)]
+   */
+  private static String[] observateurTcp(int indexDebutEntete, int idTrame) {
     Trame t = Trame.getTrame(idTrame);
-    List<String> tcontent = t.getContent();
+    String[] tcontent = t.getContent();
+    String portSrc = tcontent[indexDebutEntete] + tcontent[indexDebutEntete + 1],
+        portDst = tcontent[indexDebutEntete + 2] + tcontent[indexDebutEntete + 3];
 
-    
+    String nextProt = (portDst == "0000000001010000" || portSrc == "0000000001010000") ? "http" : "protInconnu"; // port
+    // = 80
+    // (
+    // 0x0050)?
+
+    String dataOffset = tcontent[indexDebutEntete + 12].substring(0, 4);
+    int length = Integer.parseInt(dataOffset, 2) * 4; // car exprime en mots de 32 bits = 4 octets
+
+    if (t.getContent().length == indexDebutEntete + length) { // si rien apres, nextprot = null, on s'arrete au tcp
+      nextProt = null;
+    }
+
+    return new String[] { nextProt, length + "" };
+
   }
 
-  public String[] observateurIpv4(int indexDebutEntete, int idTrame) {
-
+  /**
+   * @returns le Tableau {next_protocol ; longueur du header en octet(format String)]
+   */
+  private static String[] observateurIpv4(int indexDebutEntete, int idTrame) {
+    Trame t = Trame.getTrame(idTrame);
+    String[] tcontent = t.getContent();
+    String nextProt = tcontent[indexDebutEntete + 9] == "00000110" ? "tcp" : "rejected";
+    String lengthHeader = tcontent[indexDebutEntete + 2] + tcontent[indexDebutEntete + 3];
+    return new String[] { nextProt, Integer.parseInt(lengthHeader, 2) * 4 + "" };
   }
 
-  public String[] observateurEthernet( int idTrame) {
-    Trame t  =  Trame.getTrame(idTrame);
-    String tContent  = t.getContent() ; 
-    
-    String next = tContent.substring(36, 42 /*36+ */);
-    String [] out =  {(next == "08 00")?  "ipv4" : "rejected" , 42+""   };
+  /**
+   * @returns Le Tableau {next_protocol ; longueur du header en octet(format String)]
+   */
+  private static String[] observateurEthernet(int idTrame) {
+    Trame t = Trame.getTrame(idTrame);
+    String[] tContent = t.getContent();
+
+    String nextProt = tContent[12] + tContent[13] == "0000100000000000" ? "ipv4" : "rejected";
+    String[] out = { nextProt, 14 + "" };
 
     return out;
-   }
-
-  public void parserHttp() {
-    
-  }
-  
-  public void parserTcp() {
-    
   }
 
-  public void parserIpv4() {
+  /**
+   * Slicing de la trame entiere pour isoler une entete
+   * @param idTrame
+   * @param indexDebutEntete
+   * @param lengthHeader
+   * @return renvoie le sous tableau trameEntiere[indexDebutEntete, indexDebutEntete+  lengthHeader -1] 
+   */
+  private static String[] copyHeader(int idTrame, int indexDebutEntete, int lengthHeader) {
+    Trame t = Trame.getTrame(idTrame);
+    String[] content = t.getContent();
 
+    int indexFinEntete = indexDebutEntete + lengthHeader - 1;
+    String[] copyHeader = new String[lengthHeader];
+
+    for (int i = indexDebutEntete; i <= indexFinEntete; i++) {
+      copyHeader[i - indexDebutEntete] = content[i];
+    }
+    return copyHeader;
   }
 
-  public void parserEthernet() {
-    
+  /**
+   * Effectue les actions suivante:
+   * - cree les Infos infos correspondant a l'entete en cours de lecture
+   * - les ajoute a Protocols
+   * @param idTrame
+   * @param indexDebutEntete
+   * @param lengthHeader
+   * @param protocol
+   */
+  private static void parserGeneral(int idTrame, int indexDebutEntete, int lengthHeader, String protocol) {
+    Trame t = Trame.getTrame(idTrame);
+
+    t.setLastProtocol(protocol);
+    String[] header = copyHeader(idTrame, indexDebutEntete, lengthHeader);
+
+    Infos infos = new Infos(protocol, header);
+    Protocols.addInfos(idTrame, infos, protocol);
   }
 
-    
+  /**
+   * Traite la trame d'id idTrame en initialisant toutes ses `Infos`
+   * @param idTrame
+   */
+  public static void traitementTrame(int idTrame) {
+    Trame t = Trame.getTrame(idTrame);
+
+    String[] observateur = observateurEthernet(idTrame);
+    String nextProt = observateur[0];
+    int i = 0;
+    int n = Integer.parseInt(observateur[1]);
+
+    if (nextProt == "rejected") {
+      t.setRejected();
+    } else { // --> on a un protocol IPV4
+      parserGeneral(idTrame, i, n, "ethernet"); // on parse l'entete ethernet
+      i += n;
+      observateur = observateurIpv4(i, idTrame); // on regarde la suite
+      nextProt = observateur[0];
+
+      n = Integer.parseInt(observateur[1]);
+
+      if (nextProt == "rejected") {
+        t.setRejected();
+      } else { // --> on a un protocol tcp
+        parserGeneral(idTrame, i, n, "ipv4"); // on parse l'entete ipv4
+        i += n;
+        observateur = observateurTcp(i, idTrame);
+        nextProt = observateur[0];
+
+        n = Integer.parseInt(observateur[1]);
+
+        if (nextProt == "rejected") {
+          t.setRejected();
+        } else if (nextProt == null) { //--> la trame s'arrete a tcp, on effectue seulement le parsing de l'entete tcp
+          parserGeneral(idTrame, i, n, "tcp");
+        } else { // --> on a un protocole http 
+          parserGeneral(idTrame, i, n, "tcp"); //  on parse l'entete tcp
+          i += n;
+
+          parserGeneral(idTrame, i, t.getSize() - i, "http"); // on parse l'entete http
+
+        }
+      }
+    }
+  }
 }

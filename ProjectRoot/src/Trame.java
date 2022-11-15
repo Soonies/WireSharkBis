@@ -6,22 +6,28 @@ public class Trame {
 
   private static int counter = 0;
   private final int id;
-  private final List<String> content;
+  private final String[] content;
   private String lastProtocol;
   private boolean rejected = false;
 
-  public Trame(List<String> trame) {
+  public Trame(String[] trame) {
     id = counter;
     content = trame;
     lsTrames.add(this);
     counter++;
+
+    Parser.traitementTrame(id);
   }
 
   public int getId() {
     return id;
   }
 
-  public List<String> getContent() {
+  public int getSize() {
+    return this.content.length;
+  }
+
+  public String[] getContent() {
     return content;
   }
 
@@ -29,6 +35,14 @@ public class Trame {
     return this.lastProtocol;
   }
 
+  public void setLastProtocol(String prot) {
+    this.lastProtocol = prot;
+  }
+
+  public void setRejected() {
+    this.rejected = true;
+  }
+  
   public boolean isRejected() {
     return this.rejected;
   }
