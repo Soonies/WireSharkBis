@@ -45,11 +45,12 @@ public class Parser {
     String lignes[] = t.split("\n");
     String s = "";
     for (String l : lignes) {
-
-      s += l.substring(6, 54) + " ";
+      
+      s += l.substring(6, 54);
+      
     }
-
-    return hexToBin(s).split(" ");
+    String[] tbl = hexToBin(s).split(" ");
+    return tbl;
   }
 
   /**
@@ -82,13 +83,10 @@ public class Parser {
   private static String[] observateurTcp(int indexDebutEntete, int idTrame) {
     Trame t = Trame.getTrame(idTrame);
     String[] tcontent = t.getContent();
-    String portSrc = tcontent[indexDebutEntete] + tcontent[indexDebutEntete + 1],
-        portDst = tcontent[indexDebutEntete + 2] + tcontent[indexDebutEntete + 3];
 
-    String nextProt = (portDst == "0000000001010000" || portSrc == "0000000001010000") ? "http" : "protInconnu"; // port
-    // = 80
-    // (
-    // 0x0050)?
+  System.out.println("MON DEBUT ENTETE *********:" + indexDebutEntete);
+    String nextProt =( tcontent[indexDebutEntete + 13].charAt(4)+"").equals("1") ? "http" : "rejected";
+    System.err.println("LAAAAAAAAAAAA->>>>>>>>>>>>>>>>>>"+nextProt+ "                     "+ tcontent[indexDebutEntete + 13]);
 
     String dataOffset = tcontent[indexDebutEntete + 12].substring(0, 4);
     int length = Integer.parseInt(dataOffset, 2) * 4; // car exprime en mots de 32 bits = 4 octets
@@ -107,9 +105,9 @@ public class Parser {
   private static String[] observateurIpv4(int indexDebutEntete, int idTrame) {
     Trame t = Trame.getTrame(idTrame);
     String[] tcontent = t.getContent();
-    String nextProt = tcontent[indexDebutEntete + 9] == "00000110" ? "tcp" : "rejected";
-    String lengthHeader = tcontent[indexDebutEntete + 2] + tcontent[indexDebutEntete + 3];
-    return new String[] { nextProt, Integer.parseInt(lengthHeader, 2) * 4 + "" };
+    String nextProt = tcontent[indexDebutEntete + 9].equals("00000110") ? "tcp" : "rejected";
+    String lengthHeader = tcontent[indexDebutEntete].substring(4,7);
+    return new String[] { nextProt, Integer.parseInt(lengthHeader, 2)*4 + "" };
   }
 
   /**
@@ -119,7 +117,8 @@ public class Parser {
     Trame t = Trame.getTrame(idTrame);
     String[] tContent = t.getContent();
 
-    String nextProt = tContent[12] + tContent[13] == "0000100000000000" ? "ipv4" : "rejected";
+    String type = tContent[12] + tContent[13];
+    String nextProt = type.equals("0000100000000000") ? "ipv4" : "rejected";
     String[] out = { nextProt, 14 + "" };
 
     return out;
@@ -156,7 +155,6 @@ public class Parser {
    */
   private static void parserGeneral(int idTrame, int indexDebutEntete, int lengthHeader, String protocol) {
     Trame t = Trame.getTrame(idTrame);
-
     t.setLastProtocol(protocol);
     String[] header = copyHeader(idTrame, indexDebutEntete, lengthHeader);
 
@@ -176,7 +174,7 @@ public class Parser {
     int i = 0;
     int n = Integer.parseInt(observateur[1]);
 
-    if (nextProt == "rejected") {
+    if (nextProt.equals("rejected")) {
       t.setRejected();
     } else { // --> on a un protocol IPV4
       parserGeneral(idTrame, i, n, "ethernet"); // on parse l'entete ethernet
@@ -186,7 +184,7 @@ public class Parser {
 
       n = Integer.parseInt(observateur[1]);
 
-      if (nextProt == "rejected") {
+      if (nextProt.equals("rejected")) {
         t.setRejected();
       } else { // --> on a un protocol tcp
         parserGeneral(idTrame, i, n, "ipv4"); // on parse l'entete ipv4
@@ -196,11 +194,12 @@ public class Parser {
 
         n = Integer.parseInt(observateur[1]);
 
-        if (nextProt == "rejected") {
-          t.setRejected();
-        } else if (nextProt == null) { //--> la trame s'arrete a tcp, on effectue seulement le parsing de l'entete tcp
+        if (nextProt == null) { //--> la trame s'arrete a tcp, on effectue seulement le parsing de l'entete tcp
           parserGeneral(idTrame, i, n, "tcp");
+        }  else if (nextProt.equals("rejected")) {
+          t.setRejected();
         } else { // --> on a un protocole http 
+          
           parserGeneral(idTrame, i, n, "tcp"); //  on parse l'entete tcp
           i += n;
 
@@ -211,3 +210,9 @@ public class Parser {
     }
   }
 }
+
+/**
+  index debut entete obsrv tcp surrement eronee
+  pcq :  
+    - on test le 35 octet as flag PSH alors que on veut 47e 
+*/

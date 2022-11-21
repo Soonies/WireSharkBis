@@ -53,14 +53,7 @@ public class Trame {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    int accu  =  0 ; 
-    for (String s : this.content) {
-      System.out.println("BONNNNNNNNNNNN");
-      sb.append(accu + " : " + s +" ");
-      accu++; 
-    }
-    
+    String sb = U.sTbl(content);
     return "{" +
       " id='" + getId() + "'" +
       ", content='" + sb + "' \n " +

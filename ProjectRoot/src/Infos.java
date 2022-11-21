@@ -18,13 +18,13 @@ public class Infos {
                                                                                                                    // and
                                                                                                                    // padding
       // https://fr.wikipedia.org/wiki/IPv4
-      formatTcp_fields = " portSrc portDst sequenceNumber ackNumber offset reserved flags",
+      formatTcp_fields = "portSrc portDst sequenceNumber ackNumber offset reserved NS CWR ECE URG ACK PSH RST SYN FIN",
       // https://en.wikipedia.org/wiki/Transmission_Control_Protocol
       formatHttp_fields = "messageEnClair";
 
   private final String formatEthernet_nbOctets = "48 48 16",
       formatIpv4_nbOctets = "4 4 8 16 16 3 13 8 8 16 32 32", // ignore_remaning = ignore remaining bits (padding);
-      formatTcp_nbOctets = "16 16 32 32 4 3";
+      formatTcp_nbOctets = "16 16 32 32 4 3 1 1 1 1 1 1 1 1 1";
 
   /**
    * 
@@ -98,6 +98,7 @@ public class Infos {
 
     String[] lsFields = fields.split(" ");
     String[] lsNb = nbOctets.split(" ");
+
     if (lsFields.length != lsNb.length) {
       throw new InvalidParameterException("lsNb et lsFields de tailles differentes");
     }
@@ -138,18 +139,22 @@ public class Infos {
   // !!! a verifier
   private void translateBinaryToAscii() {
     List<Character> ls = new ArrayList<>();
+   
     for (String s : this.header) {
       int charCode = Integer.parseInt(s, 2);
       char c = (char) charCode;
       ls.add(c);
     }
     this.headerHttpClair = ls;
+   
   }
+
+
 
   private int findNewLineChar() throws InvalidParameterException {
 
     for (int i = 0; i < this.headerHttpClair.size(); i++) {
-      if (headerHttpClair.get(i) == '\n') {
+      if (headerHttpClair.get(i).equals( '\n')) {
         return i;
       }
     }
@@ -160,8 +165,10 @@ public class Infos {
   // !!!
   public void hashHttp() {
     translateBinaryToAscii();
+    System.out.println( "\n MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + this.headerHttpClair);
     int i = findNewLineChar();
     String s = "";
+
     for (int k = 0; k < this.headerHttpClair.size(); k++) {
       if (k > i) {
         break;
