@@ -31,48 +31,15 @@ public class Parser {
     hex = hex.replaceAll("7", "0111");
     hex = hex.replaceAll("8", "1000");
     hex = hex.replaceAll("9", "1001");
-    hex = hex.replaceAll("A", "1010");
-    hex = hex.replaceAll("B", "1011");
-    hex = hex.replaceAll("C", "1100");
-    hex = hex.replaceAll("D", "1101");
-    hex = hex.replaceAll("E", "1110");
-    hex = hex.replaceAll("F", "1111");
+    hex = hex.replaceAll("a", "1010");
+    hex = hex.replaceAll("b", "1011");
+    hex = hex.replaceAll("c", "1100");
+    hex = hex.replaceAll("d", "1101");
+    hex = hex.replaceAll("e", "1110");
+    hex = hex.replaceAll("f", "1111");
     return hex;
   }
 
-  /*
-   * 
-   * @throws IOException
-   * 
-   * public void splitInput() throws IOException {
-   * StringBuilder trame = new StringBuilder();
-   * 
-   * BufferedReader br = new BufferedReader(new FileReader(f));
-   * 
-   * for(String line = br.readLine() ; line != null ; line = br.readLine() ) {
-   * 
-   * if(!(line == "\n")){
-   * for(int i=6; i<line.length(); i++){
-   * if(line.charAt(i) != ' ' || line.charAt(i+1) != ' '){
-   * trame.append(line.charAt(i));
-   * }
-   * else{
-   * trame.append(" ");
-   * break;
-   * }
-   * }
-   * }
-   * 
-   * else{
-   * new Trame(trame.toString());
-   * trame = new StringBuilder();
-   * }
-   * 
-   * }
-   * 
-   * br.close();
-   * }
-   */
 
   private static String[] formateTrame(String t) {
     String lignes[] = t.split("\n");
@@ -102,7 +69,8 @@ public class Parser {
 
     for (String t : lsTrames) {
       String[] trame = formateTrame(t);
-      new Trame(trame);
+      Trame tt = new Trame(trame);
+      System.out.println("Ma Trame: \n" + tt);
     }
 
     br.close();

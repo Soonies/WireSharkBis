@@ -53,9 +53,17 @@ public class Trame {
 
   @Override
   public String toString() {
+    StringBuilder sb = new StringBuilder();
+    int accu  =  0 ; 
+    for (String s : this.content) {
+      System.out.println("BONNNNNNNNNNNN");
+      sb.append(accu + " : " + s +" ");
+      accu++; 
+    }
+    
     return "{" +
       " id='" + getId() + "'" +
-      ", content='" + getContent() + "'" +
+      ", content='" + sb + "' \n " +
       ", lastProtocol='" + getLastProtocol() + "'" +
       ", rejected='" + isRejected() + "'" +
       "}";
