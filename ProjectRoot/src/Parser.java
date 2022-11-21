@@ -18,8 +18,6 @@ public class Parser {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    
-    
   }
 
   private static String hexToBin(String hex) {
@@ -108,7 +106,6 @@ public class Parser {
     }
 
     br.close();
-
   }
 
   /**
