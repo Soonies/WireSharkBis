@@ -12,19 +12,19 @@ public class Protocols {
   public Protocols() {
   }
 
-  public Infos getEthernetInfos(int id) {
+  public static Infos getEthernetInfos(int id) {
     return ethernet.get(id);
   }
 
-  public Infos getHttpInfos(int id) {
+  public static Infos getHttpInfos(int id) {
     return http.get(id);
   }
 
-  public Infos getTcpInfos(int id) {
+  public static Infos getTcpInfos(int id) {
     return tcp.get(id);
   }
 
-  public Infos getIpv4Infos(int id) {
+  public static Infos getIpv4Infos(int id) {
     return ipv4.get(id);
   }
 

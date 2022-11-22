@@ -70,8 +70,7 @@ public class Parser {
 
     for (String t : lsTrames) {
       String[] trame = formateTrame(t);
-      Trame tt = new Trame(trame);
-      System.out.println("Ma Trame: \n" + tt);
+      new Trame(trame);
     }
 
     br.close();
@@ -84,9 +83,7 @@ public class Parser {
     Trame t = Trame.getTrame(idTrame);
     String[] tcontent = t.getContent();
 
-  System.out.println("MON DEBUT ENTETE *********:" + indexDebutEntete);
     String nextProt =( tcontent[indexDebutEntete + 13].charAt(4)+"").equals("1") ? "http" : "rejected";
-    System.err.println("LAAAAAAAAAAAA->>>>>>>>>>>>>>>>>>"+nextProt+ "                     "+ tcontent[indexDebutEntete + 13]);
 
     String dataOffset = tcontent[indexDebutEntete + 12].substring(0, 4);
     int length = Integer.parseInt(dataOffset, 2) * 4; // car exprime en mots de 32 bits = 4 octets
@@ -106,7 +103,7 @@ public class Parser {
     Trame t = Trame.getTrame(idTrame);
     String[] tcontent = t.getContent();
     String nextProt = tcontent[indexDebutEntete + 9].equals("00000110") ? "tcp" : "rejected";
-    String lengthHeader = tcontent[indexDebutEntete].substring(4,7);
+    String lengthHeader = tcontent[indexDebutEntete].substring(4, 8);
     return new String[] { nextProt, Integer.parseInt(lengthHeader, 2)*4 + "" };
   }
 
@@ -214,5 +211,7 @@ public class Parser {
 /**
   index debut entete obsrv tcp surrement eronee
   pcq :  
-    - on test le 35 octet as flag PSH alors que on veut 47e 
+    - on test le 35 octet as flag PSH alors que on veut 47e jwncje jewcekneknefkwdnjnjdnajnd da   :)   
+
+  javac Exec.java Trame.java Header.java Infos.java Parser.java Protocols.java U.java
 */

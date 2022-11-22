@@ -110,8 +110,10 @@ public class Infos {
 
     for (int i = 0; i < n; i++) {
       int octetSuivant = Integer.parseInt(lsNb[i]) + octetCourant;
-      String data = getSubString(lsFields, octetCourant, octetSuivant - 1);
+      String data = getSubString(this.header, octetCourant, octetSuivant - 1);
+      // System.out.println(lsFields[i]+  " : " + data);
       hash.put(lsFields[i], data);
+      octetCourant = octetSuivant;
     }
     return hash;
   }
@@ -164,8 +166,8 @@ public class Infos {
 
   // !!!
   public void hashHttp() {
+    this.hashInfos = new Hashtable<>();
     translateBinaryToAscii();
-    System.out.println( "\n MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + this.headerHttpClair);
     int i = findNewLineChar();
     String s = "";
 

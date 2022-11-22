@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Trame {
+public class Trame implements Iterable<Trame>{
   private static List<Trame> lsTrames = new ArrayList<>();
 
   private static int counter = 0;
@@ -60,5 +61,28 @@ public class Trame {
       ", lastProtocol='" + getLastProtocol() + "'" +
       ", rejected='" + isRejected() + "'" +
       "}";
+  }
+
+
+  public class Iterateur implements Iterator<Trame>{
+    public Iterator<Trame> ite  =  lsTrames.iterator();
+    
+    @Override
+    public boolean hasNext() {
+      return ite.hasNext();
+    }
+
+    @Override
+    public Trame next() {
+      return ite.next();
+    }
+
+  }
+
+
+  @Override
+  public Iterator<Trame> iterator() {
+    
+    return new Iterateur() ;
   }
 }
