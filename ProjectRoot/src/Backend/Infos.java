@@ -1,3 +1,4 @@
+package Backend;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -18,13 +19,13 @@ public class Infos {
                                                                                                                    // and
                                                                                                                    // padding
       // https://fr.wikipedia.org/wiki/IPv4
-      formatTcp_fields = "portSrc portDst sequenceNumber ackNumber offset reserved NS CWR ECE URG ACK PSH RST SYN FIN",
+      formatTcp_fields = "portSrc portDst sequenceNumber ackNumber offset reserved NS CWR ECE URG ACK PSH RST SYN FIN window",
       // https://en.wikipedia.org/wiki/Transmission_Control_Protocol
       formatHttp_fields = "messageEnClair";
 
-  private final String formatEthernet_nbOctets = "48 48 16",
-      formatIpv4_nbOctets = "4 4 8 16 16 3 13 8 8 16 32 32", // ignore_remaning = ignore remaining bits (padding);
-      formatTcp_nbOctets = "16 16 32 32 4 3 1 1 1 1 1 1 1 1 1";
+  private final String formatEthernet_nbBits = "48 48 16",
+      formatIpv4_nbBits = "4 4 8 16 16 3 13 8 8 16 32 32", // ignore_remaning = ignore remaining bits (padding);
+      formatTcp_nbBits = "16 16 32 32 4 3 1 1 1 1 1 1 1 1 1 16";
 
   /**
    * 
@@ -120,20 +121,20 @@ public class Infos {
 
   
   public void hashEthernet() {
-    Map<String, String> hash = makeHash(formatEthernet_fields, formatEthernet_nbOctets);
+    Map<String, String> hash = makeHash(formatEthernet_fields, formatEthernet_nbBits);
     this.hashInfos = hash;
   }
 
  
   public void hashIpv4() {
-    Map<String, String> hash = makeHash(formatIpv4_fields, formatIpv4_nbOctets);
+    Map<String, String> hash = makeHash(formatIpv4_fields, formatIpv4_nbBits);
     this.hashInfos = hash;
 
   }
 
  
   public void hashTcp() {
-    Map<String, String> hash = makeHash(formatTcp_fields, formatTcp_nbOctets);
+    Map<String, String> hash = makeHash(formatTcp_fields, formatTcp_nbBits);
     this.hashInfos = hash;
 
   }

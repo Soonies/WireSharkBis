@@ -1,3 +1,5 @@
+package Backend;
+
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +30,22 @@ public class Protocols {
     return ipv4.get(id);
   }
 
+  public static String getEthernetInfosField(int id, String field) {
+    return ethernet.get(id).getField(field);
+  }
+
+  public static String getHttpInfosField(int id, String field) {
+    return http.get(id).getField(field);
+  }
+
+  public static String getTcpInfosField(int id, String field) {
+    return tcp.get(id).getField(field);
+  }
+
+  public static String getIpv4InfosField(int id, String field) {
+    return ipv4.get(id).getField(field);
+  }
+
   public static void addInfos(int idTrame, Infos infos, String protocol) {
     switch (protocol) {
       case "ethernet":
@@ -46,7 +64,5 @@ public class Protocols {
         throw new InvalidParameterException("Protocol invalide: " + protocol);
     }
   }
-
-
 
 }
