@@ -11,7 +11,7 @@ import Affichage.Panneau;
 public class Display {
     
     public static void main(String[] args) {
-      File f = new File("ProjectRoot/data/2.txt");
+      File f = new File("WireSharkBis/ProjectRoot/data/2.txt");
       new Parser(f);
       afficheurFinal();
     }

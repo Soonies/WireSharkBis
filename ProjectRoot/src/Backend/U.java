@@ -13,6 +13,19 @@ public class U {
     return sb + "";
   }
 
+/**
+input : Binary string s reprensenting char
+@return char
+ */
+  public static Character binToAscii(String s) {
+
+      int charCode = Integer.parseInt(s, 2);
+      char c = (char) charCode;
+     
+      return c;
+
+  }
+
   public static void pTbl(String[] t) {
     System.out.println(sTbl(t));
   }
@@ -61,7 +74,6 @@ public class U {
    * @return ip binaire convertie en decimal, avec longueur = 15
    */
   public static String ipBinToIpDec(String ipBin) {
-    System.out.println("Mon ip bin:" + ipBin); // 1110 1101 0110 1011
     String ipDec = "";
     for (int i = 0; i < 4; i++) {
       String petitMorceau = formatString(3, binToDec(ipBin.substring(8 * i, 8 * (i + 1))));

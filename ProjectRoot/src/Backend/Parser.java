@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class Parser {
   private File f;
@@ -77,22 +79,62 @@ public class Parser {
     br.close();
   }
 
+
+// tcp " "
+  private static boolean isHttp(int indexDebutPayload, int length, int idTrame) {
+    Trame t = Trame.getTrame(idTrame);
+    String[] tcontent = t.getContent();
+    String keywords  =  "GET HEAD POST PUT DELETE CONNECT OPTIONS TRACE PATCH HTTP";
+    List<String> lsKeywords = Arrays.asList(keywords.split(" "));
+
+    String s = "";
+    for (int i = indexDebutPayload; i < indexDebutPayload + length; i++) {
+      Character c  = U.binToAscii(tcontent[i]);
+      if (c.equals(' ')) {
+        return lsKeywords.contains(s);
+      } 
+      if(s.equals("HTTP")) {
+        return true;
+      }
+      s+= c;
+    }
+    return false;
+  }
   /**
    * @returns Le Tableau {next_protocol ; longueur du header en octet(format
    *          String)]
    */
-  private static String[] observateurTcp(int indexDebutEntete, int idTrame) {
+  private static String[] observateurTcp(int indexDebutEntete, int idTrame){
     Trame t = Trame.getTrame(idTrame);
     String[] tcontent = t.getContent();
+    String srcPort = tcontent[indexDebutEntete]+tcontent[indexDebutEntete+1],
+        dstPort = tcontent[indexDebutEntete + 2] + tcontent[indexDebutEntete + 3];
+    String quatreVingt =      "0000000001010000";
+    int mvq = Integer.parseInt(U.binToDec("0000010000000000"));
+    Boolean conditionPort80 = srcPort.equals(quatreVingt) || dstPort.equals(quatreVingt);
+    Boolean conditionPasAutreProtocol = Integer.parseInt(U.binToDec(srcPort)) > mvq && Integer.parseInt(U.binToDec(dstPort)) > mvq ;
 
-    String nextProt = (tcontent[indexDebutEntete + 13].charAt(4) + "").equals("1") ? "http" : "rejected";
-
+    // condition  =  
     String dataOffset = tcontent[indexDebutEntete + 12].substring(0, 4);
     int length = Integer.parseInt(dataOffset, 2) * 4; // car exprime en mots de 32 bits = 4 octets
 
-    if (t.getContent().length == indexDebutEntete + length) { // si rien apres, nextprot = null, on s'arrete au tcp
+    
+    String nextProt = "rejected";
+  
+    if (conditionPort80) { // si un port est 80 alors c'est un TCP qui encapsule potentiellement un HTTP
+      int longueurDataApresTcp = tcontent.length - (indexDebutEntete + length);
+      
+      if (longueurDataApresTcp > 0){ // le port est 80, verifions si un HTTP est encapsule
+        nextProt = isHttp(indexDebutEntete+length, longueurDataApresTcp, idTrame) ? "http" : null;
+      }
+      else{
+        nextProt = null;
+      }
+    }
+    else if (conditionPasAutreProtocol) { // si un port n'est pas 80 et est > 1024, alors c'est un TCP
       nextProt = null;
     }
+
 
     return new String[] { nextProt, length + "" };
 
@@ -107,7 +149,8 @@ public class Parser {
     String[] tcontent = t.getContent();
     String nextProt = tcontent[indexDebutEntete + 9].equals("00000110") ? "tcp" : "rejected";
     String lengthHeader = tcontent[indexDebutEntete].substring(4, 8);
-    return new String[] { nextProt, Integer.parseInt(lengthHeader, 2) * 4 + "" };
+    String totalLength = tcontent[indexDebutEntete + 2]+tcontent[indexDebutEntete+3];
+    return new String[] { nextProt, Integer.parseInt(lengthHeader, 2) * 4 + "", totalLength};
   }
 
   /**
@@ -194,7 +237,7 @@ public class Parser {
       } else { // --> on a un protocol tcp
         parserGeneral(idTrame, i, n, "ipv4"); // on parse l'entete ipv4
         i += n;
-        observateur = observateurTcp(i, idTrame);
+        observateur = observateurTcp(i, idTrame); //observateur = observateurTcp(i, idTrame, totalLength);
         nextProt = observateur[0];
 
         n = Integer.parseInt(observateur[1]);

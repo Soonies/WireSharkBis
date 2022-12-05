@@ -150,6 +150,9 @@ public class Infos {
 
   }
 
+/**
+renvoie l'indice du premier charactere '\n rencontre dans this.header' 
+ */
   private int findNewLineChar() throws InvalidParameterException {
 
     for (int i = 0; i < this.headerHttpClair.size(); i++) {
@@ -165,8 +168,6 @@ public class Infos {
   public void hashHttp() {
     this.hashInfos = new Hashtable<>();
     translateBinaryToAscii();
-    System.out.println("Mon header :" + U.sTbl(this.header));
-    System.out.println("Mon header traite :" + U.sLst( this.headerHttpClair));
     int i = findNewLineChar();
     String s = "";
 
