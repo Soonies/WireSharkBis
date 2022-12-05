@@ -157,7 +157,7 @@ public class Infos {
         return i;
       }
     }
-    throw new InvalidParameterException("Le header Http ne contient pas de '\\n': " + this.headerHttpClair);
+    throw new InvalidParameterException("Le header Http ne contient pas de '\\n': "+ U.sLst(this.headerHttpClair));
 
   }
 
@@ -165,6 +165,8 @@ public class Infos {
   public void hashHttp() {
     this.hashInfos = new Hashtable<>();
     translateBinaryToAscii();
+    System.out.println("Mon header :" + U.sTbl(this.header));
+    System.out.println("Mon header traite :" + U.sLst( this.headerHttpClair));
     int i = findNewLineChar();
     String s = "";
 

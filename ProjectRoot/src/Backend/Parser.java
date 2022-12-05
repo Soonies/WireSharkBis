@@ -1,4 +1,5 @@
 package Backend;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,9 +13,8 @@ public class Parser {
     init();
   }
 
-
   private void init() {
-    try{
+    try {
       splitInput();
     } catch (IOException e) {
       e.printStackTrace();
@@ -41,14 +41,13 @@ public class Parser {
     return hex;
   }
 
-
   private static String[] formateTrame(String t) {
     String lignes[] = t.split("\n");
     String s = "";
     for (String l : lignes) {
-      
+
       s += l.substring(6, 54);
-      
+
     }
     String[] tbl = hexToBin(s).split(" ");
     return tbl;
@@ -56,6 +55,7 @@ public class Parser {
 
   /**
    * instancie toutes les trames du fichier
+   * 
    * @throws IOException
    */
   private void splitInput() throws IOException {
@@ -78,13 +78,14 @@ public class Parser {
   }
 
   /**
-   * @returns Le Tableau {next_protocol ; longueur du header en octet(format String)]
+   * @returns Le Tableau {next_protocol ; longueur du header en octet(format
+   *          String)]
    */
   private static String[] observateurTcp(int indexDebutEntete, int idTrame) {
     Trame t = Trame.getTrame(idTrame);
     String[] tcontent = t.getContent();
 
-    String nextProt =( tcontent[indexDebutEntete + 13].charAt(4)+"").equals("1") ? "http" : "rejected";
+    String nextProt = (tcontent[indexDebutEntete + 13].charAt(4) + "").equals("1") ? "http" : "rejected";
 
     String dataOffset = tcontent[indexDebutEntete + 12].substring(0, 4);
     int length = Integer.parseInt(dataOffset, 2) * 4; // car exprime en mots de 32 bits = 4 octets
@@ -98,18 +99,20 @@ public class Parser {
   }
 
   /**
-   * @returns le Tableau {next_protocol ; longueur du header en octet(format String)]
+   * @returns le Tableau {next_protocol ; longueur du header en octet(format
+   *          String)]
    */
   private static String[] observateurIpv4(int indexDebutEntete, int idTrame) {
     Trame t = Trame.getTrame(idTrame);
     String[] tcontent = t.getContent();
     String nextProt = tcontent[indexDebutEntete + 9].equals("00000110") ? "tcp" : "rejected";
     String lengthHeader = tcontent[indexDebutEntete].substring(4, 8);
-    return new String[] { nextProt, Integer.parseInt(lengthHeader, 2)*4 + "" };
+    return new String[] { nextProt, Integer.parseInt(lengthHeader, 2) * 4 + "" };
   }
 
   /**
-   * @returns Le Tableau {next_protocol ; longueur du header en octet(format String)]
+   * @returns Le Tableau {next_protocol ; longueur du header en octet(format
+   *          String)]
    */
   private static String[] observateurEthernet(int idTrame) {
     Trame t = Trame.getTrame(idTrame);
@@ -124,10 +127,12 @@ public class Parser {
 
   /**
    * Slicing de la trame entiere pour isoler une entete
+   * 
    * @param idTrame
    * @param indexDebutEntete
    * @param lengthHeader
-   * @return renvoie le sous tableau trameEntiere[indexDebutEntete, indexDebutEntete+  lengthHeader -1] 
+   * @return renvoie le sous tableau trameEntiere[indexDebutEntete,
+   *         indexDebutEntete+ lengthHeader -1]
    */
   private static String[] copyHeader(int idTrame, int indexDebutEntete, int lengthHeader) {
     Trame t = Trame.getTrame(idTrame);
@@ -146,6 +151,7 @@ public class Parser {
    * Effectue les actions suivante:
    * - cree les Infos infos correspondant a l'entete en cours de lecture
    * - les ajoute a Protocols
+   * 
    * @param idTrame
    * @param indexDebutEntete
    * @param lengthHeader
@@ -162,6 +168,7 @@ public class Parser {
 
   /**
    * Traite la trame d'id idTrame en initialisant toutes ses `Infos`
+   * 
    * @param idTrame
    */
   public static void traitementTrame(int idTrame) {
@@ -192,13 +199,13 @@ public class Parser {
 
         n = Integer.parseInt(observateur[1]);
 
-        if (nextProt == null) { //--> la trame s'arrete a tcp, on effectue seulement le parsing de l'entete tcp
+        if (nextProt == null) { // --> la trame s'arrete a tcp, on effectue seulement le parsing de l'entete tcp
           parserGeneral(idTrame, i, n, "tcp");
-        }  else if (nextProt.equals("rejected")) {
+        } else if (nextProt.equals("rejected")) {
           t.setRejected();
-        } else { // --> on a un protocole http 
-          
-          parserGeneral(idTrame, i, n, "tcp"); //  on parse l'entete tcp
+        } else { // --> on a un protocole http
+
+          parserGeneral(idTrame, i, n, "tcp"); // on parse l'entete tcp
           i += n;
 
           parserGeneral(idTrame, i, t.getSize() - i, "http"); // on parse l'entete http
@@ -210,9 +217,11 @@ public class Parser {
 }
 
 /**
-  index debut entete obsrv tcp surrement eronee
-  pcq :  
-    - on test le 35 octet as flag PSH alors que on veut 47e jwncje jewcekneknefkwdnjnjdnajnd da   :)   
-
-  javac Exec.java Trame.java Header.java Infos.java Parser.java Protocols.java U.java
-*/
+ * index debut entete obsrv tcp surrement eronee
+ * pcq :
+ * - on test le 35 octet as flag PSH alors que on veut 47e jwncje
+ * jewcekneknefkwdnjnjdnajnd da :)
+ * 
+ * javac Exec.java Trame.java Header.java Infos.java Parser.java Protocols.java
+ * U.java
+ */

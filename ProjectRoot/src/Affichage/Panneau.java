@@ -100,13 +100,13 @@ public class Panneau {
 
     if (i_ipSrc < i_ipDst) {
       writeRightPort(srcPort, index, i_ipSrc);
-      writeLine(index, i_ipSrc, i_ipDst);
+      writeLine(index, i_ipSrc,1, i_ipDst,0);
       writeRightArrow(index, i_ipDst);
       writeLeftPort(dstPort, index, i_ipDst);
     } else {
       writeRightPort(dstPort, index, i_ipDst);
       writeLeftArrow(index, i_ipDst);
-      writeLine(index, i_ipDst + 1, i_ipSrc + 1);
+      writeLine(index, i_ipDst ,2 , i_ipSrc ,1);
       writeLeftPort(srcPort, index, i_ipSrc);
 
     }
@@ -128,8 +128,8 @@ public class Panneau {
   /**
    * @return renvoie la coordonnee en x de l'ip d'indice i_ip dans le panneau
    */
-  private int getIndexIpDecale(int i_ip) {
-    return 2 * i_ip + 1 + 1; // le deuxieme +1 pour l'offset de l'id
+  private int getIndexIpDecale(int i_ip, int decalage) {
+    return 2 * i_ip + decalage + 1; // le deuxieme +1 pour l'offset de l'id
   }
 
   /**
@@ -152,7 +152,7 @@ public class Panneau {
 
   private void writeArrowGeneral(int index, int i_ip, char side) {
     int i = getIndexFlecheDecale(index, 1);
-    int j = getIndexIpDecale(i_ip);
+    int j = getIndexIpDecale(i_ip,1);
     String content = null;
 
     switch (side) {
@@ -175,21 +175,21 @@ public class Panneau {
   }
 
   private void writeRightArrow(int index, int i_ip) {
-    writeArrowGeneral(index, i_ip, 'l');
+    writeArrowGeneral(index, i_ip, 'r');
   }
 
   private void writePortGeneral(String port, int index, int i_ip, char side) {
     int i = getIndexFlecheDecale(index, 0); // +2 pour l'offset
-    int j = getIndexIpDecale(i_ip);
+    Integer j;
     String content = null;
 
     switch (side) {
       case 'l':
-        j -= 1;
+        j = getIndexIpDecale(i_ip, 2);
         content = port + "          ";
         break;
       case 'r':
-        j += 1;
+        j = getIndexIpDecale(i_ip, 0);
         content = "          " + port;
         break;
 
@@ -215,9 +215,9 @@ public class Panneau {
    * @param i_ipSrc
    * @param i_ipDst
    */
-  private void writeLine(int index, int i_ipSrc, int i_ipDst) {
+  private void writeLine(int index, int i_ipSrc, int decalageGauche, int i_ipDst, int decalageDroite) {
     int i = getIndexFlecheDecale(index, 1);
-    for (int j = i_ipSrc; j < i_ipDst; j++) {
+    for (int j = getIndexIpDecale(i_ipSrc, decalageGauche) ; j <= getIndexIpDecale(i_ipDst,decalageDroite); j++) {
       setij(i, j, LINE);
     }
   }

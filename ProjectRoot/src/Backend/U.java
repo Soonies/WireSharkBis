@@ -1,5 +1,7 @@
 package Backend;
 
+import java.util.List;
+
 public class U {
   public static String sTbl(String[] t) {
     StringBuilder sb = new StringBuilder();
@@ -12,7 +14,21 @@ public class U {
   }
 
   public static void pTbl(String[] t) {
-    System.err.println(sTbl(t));
+    System.out.println(sTbl(t));
+  }
+
+  public static<T> String  sLst(List<T> t) {
+    StringBuilder sb = new StringBuilder();
+    int accu = 0;
+    for (T s : t) {
+      sb.append(accu + ":" + s + " ");
+      accu++;
+    }
+    return sb + "";
+  }
+
+  public static void pLst(List<String> t) {
+    System.out.println(sLst(t));
   }
 
   public static String binToDec(String s) {
