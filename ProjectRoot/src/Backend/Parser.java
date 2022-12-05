@@ -107,12 +107,6 @@ public class Parser {
   private static String[] observateurTcp(int indexDebutEntete, int idTrame){
     Trame t = Trame.getTrame(idTrame);
     String[] tcontent = t.getContent();
-    String srcPort = tcontent[indexDebutEntete]+tcontent[indexDebutEntete+1],
-        dstPort = tcontent[indexDebutEntete + 2] + tcontent[indexDebutEntete + 3];
-    String quatreVingt =      "0000000001010000";
-    int mvq = Integer.parseInt(U.binToDec("0000010000000000"));
-    Boolean conditionPort80 = srcPort.equals(quatreVingt) || dstPort.equals(quatreVingt);
-    Boolean conditionPasAutreProtocol = Integer.parseInt(U.binToDec(srcPort)) > mvq && Integer.parseInt(U.binToDec(dstPort)) > mvq ;
 
     // condition  =  
     String dataOffset = tcontent[indexDebutEntete + 12].substring(0, 4);
@@ -121,17 +115,13 @@ public class Parser {
     
     String nextProt = "rejected";
   
-    if (conditionPort80) { // si un port est 80 alors c'est un TCP qui encapsule potentiellement un HTTP
-      int longueurDataApresTcp = tcontent.length - (indexDebutEntete + length);
-      
-      if (longueurDataApresTcp > 0){ // le port est 80, verifions si un HTTP est encapsule
-        nextProt = isHttp(indexDebutEntete+length, longueurDataApresTcp, idTrame) ? "http" : null;
-      }
-      else{
-        nextProt = null;
-      }
+  
+    int longueurDataApresTcp = tcontent.length - (indexDebutEntete + length);
+
+    if (longueurDataApresTcp > 0){ // le port est 80, verifions si un HTTP est encapsule
+      nextProt = isHttp(indexDebutEntete+length, longueurDataApresTcp, idTrame) ? "http" : null;
     }
-    else if (conditionPasAutreProtocol) { // si un port n'est pas 80 et est > 1024, alors c'est un TCP
+    else{
       nextProt = null;
     }
 
