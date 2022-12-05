@@ -23,8 +23,8 @@ public class Fleche {
     int idTrame = t1.getId();
     id = idTrame;
 
-    String srcPort = tcpIF(idTrame, "srcPort"),
-        dstPort = tcpIF(idTrame, "dstPort"),
+    String srcPort = tcpIF(idTrame, "portSrc"),
+        dstPort = tcpIF(idTrame, "portDst"),
         ipSrc = ipIF(idTrame, "ipSrc"),
         ipDst = ipIF(idTrame, "ipDst");
 
@@ -50,16 +50,13 @@ public class Fleche {
   }
 
   private static String ipIF(int id, String field) {
-    return ipIF(id, field);
+    return Protocols.getIpv4InfosField(id, field);
   }
 
   private static String tcpIF(int id, String field) {
-    return tcpIF(id, field);
+    return Protocols.getTcpInfosField(id, field);
   }
 
-  private static String ipBTD(String s) {
-    return U.ipBinToIpDec(s);
-  }
 
   private static String BTD(String s) {
     return U.binToDec(s);
@@ -80,7 +77,7 @@ public class Fleche {
     List<String> ls = new ArrayList<String>();
 
     for (String flag : lsFlags) {
-      if (tcpIF(t.getId(), "flag").equals("1")) {
+      if (tcpIF(t.getId(), flag).equals("1")) {
         ls.add(flag);
       }
     }
@@ -90,11 +87,11 @@ public class Fleche {
 
   private String makeCommentTCP(Trame trame) {
     id = trame.getId();
+    String portSrc = BTD(tcpIF(id, "portSrc"));
+    String portDst = BTD(tcpIF(id, "portDst")),
+        sequenceNumber = BTD(tcpIF(id, "sequenceNumber")),
 
-    String portSrc = ipBTD(tcpIF(id, "portSrc")),
-        portDst = ipBTD(tcpIF(id, "portDst")),
-        sequenceNumber = ipBTD(tcpIF(id, "sequenceNumber")),
-        ackNumber = ipBTD(tcpIF(id, "ackNumber")),
+        ackNumber = BTD(tcpIF(id, "ackNumber")),
         window = BTD(tcpIF(id, "window"));
 
     List<String> flags = flagsUpTcp(trame);

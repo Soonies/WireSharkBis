@@ -1,4 +1,5 @@
 package Backend;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -112,27 +113,24 @@ public class Infos {
     for (int i = 0; i < n; i++) {
       int octetSuivant = Integer.parseInt(lsNb[i]) + octetCourant;
       String data = getSubString(this.header, octetCourant, octetSuivant - 1);
-      // System.out.println(lsFields[i]+  " : " + data);
+      // System.out.println(lsFields[i]+ " : " + data);
       hash.put(lsFields[i], data);
       octetCourant = octetSuivant;
     }
     return hash;
   }
 
-  
   public void hashEthernet() {
     Map<String, String> hash = makeHash(formatEthernet_fields, formatEthernet_nbBits);
     this.hashInfos = hash;
   }
 
- 
   public void hashIpv4() {
     Map<String, String> hash = makeHash(formatIpv4_fields, formatIpv4_nbBits);
     this.hashInfos = hash;
 
   }
 
- 
   public void hashTcp() {
     Map<String, String> hash = makeHash(formatTcp_fields, formatTcp_nbBits);
     this.hashInfos = hash;
@@ -142,22 +140,20 @@ public class Infos {
   // !!! a verifier
   private void translateBinaryToAscii() {
     List<Character> ls = new ArrayList<>();
-   
+
     for (String s : this.header) {
       int charCode = Integer.parseInt(s, 2);
       char c = (char) charCode;
       ls.add(c);
     }
     this.headerHttpClair = ls;
-   
+
   }
-
-
 
   private int findNewLineChar() throws InvalidParameterException {
 
     for (int i = 0; i < this.headerHttpClair.size(); i++) {
-      if (headerHttpClair.get(i).equals( '\n')) {
+      if (headerHttpClair.get(i).equals('\n')) {
         return i;
       }
     }
@@ -183,19 +179,19 @@ public class Infos {
 
   }
 
-
   public void setInfos(String field, String data) {
     this.hashInfos.replace(field, data);
   }
-
 
   public Map<String, String> getInfos() {
     return this.hashInfos;
   }
 
-
   public String getField(String field) {
-    return this.hashInfos.get(field);
+    if (!hashInfos.containsKey(field)) {
+      throw new IllegalAccessError("Pas de field correspondant: " + field);
+    }
+    return hashInfos.get(field);
   }
 
   public String getType() {

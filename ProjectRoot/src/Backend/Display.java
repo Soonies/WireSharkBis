@@ -7,13 +7,11 @@ import java.util.List;
 
 import Affichage.Panneau;
 
-import java.security.InvalidParameterException;
-import Backend.U;
 
 public class Display {
     
     public static void main(String[] args) {
-      File f = new File("../data/1.txt");
+      File f = new File("ProjectRoot/data/1.txt");
       new Parser(f);
       afficheurFinal();
     }

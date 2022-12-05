@@ -16,8 +16,9 @@ public class U {
   }
 
   public static String binToDec(String s) {
-    return Integer.parseInt(s, 2) + "";
+    return Long.parseLong(s, 2) + "";
   }
+  
 
   /**
    * Pour une string s = abcdef et un entier n
@@ -44,6 +45,7 @@ public class U {
    * @return ip binaire convertie en decimal, avec longueur = 15
    */
   public static String ipBinToIpDec(String ipBin) {
+    System.out.println("Mon ip bin:" + ipBin); // 1110 1101 0110 1011
     String ipDec = "";
     for (int i = 0; i < 4; i++) {
       String petitMorceau = formatString(3, binToDec(ipBin.substring(8 * i, 8 * (i + 1))));

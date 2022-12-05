@@ -15,18 +15,30 @@ public class Protocols {
   }
 
   public static Infos getEthernetInfos(int id) {
+    if (!ethernet.containsKey(id)) {
+      throw new IllegalAccessError("Pas d'id correspondant " + id);
+    }
     return ethernet.get(id);
   }
 
   public static Infos getHttpInfos(int id) {
+    if (!http.containsKey(id)) {
+      throw new IllegalAccessError("Pas d'id correspondant " + id);
+    }
     return http.get(id);
   }
 
   public static Infos getTcpInfos(int id) {
+    if (!tcp.containsKey(id)) {
+      throw new IllegalAccessError("Pas d'id correspondant " + id);
+    }
     return tcp.get(id);
   }
 
   public static Infos getIpv4Infos(int id) {
+    if (!ipv4.containsKey(id)) {
+      throw new IllegalAccessError("Pas d'id correspondant " + id);
+    }
     return ipv4.get(id);
   }
 
