@@ -14,10 +14,11 @@ import Affichage.Panneau;
 public class Display {
     
   public static void main(String[] args) {
-      if(args.length == 0){
-        System.err.println("Attention ! Il est nécéssaire de mettre en argument lors de l'éxecution un fichier comprenant une ou plusieurs trames.");
+	  String file = "ProjectRoot/data/1.txt";
+      if(args.length != 0){
+        file = args[0];
       }
-      File f = new File(args[0]);
+      File f = new File(file);
       new Parser(f);
       afficheurFinal();
     }
