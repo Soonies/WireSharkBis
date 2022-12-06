@@ -33,6 +33,28 @@ public class Trame implements Iterable<Trame>{
     return content;
   }
 
+  /**
+   @return true si la trame courante contient le protocole `protocol`, false si non
+   */
+  public boolean hasProtocol(String protocol) {
+    switch (protocol) {
+      case "http":
+        return Protocols.hasHttpInfo(id);
+        
+    case "tcp":
+      return Protocols.hasTcpInfo(id);
+        
+    case "ipv4":
+      return Protocols.hasIpv4Info(id);
+      
+    case "ethernet":
+      return true;
+     
+    default:
+      throw new IllegalArgumentException("Le protocole demande n'est pas reconnu: " + protocol);
+        
+    }
+  }
   public String getLastProtocol() {
     return this.lastProtocol;
   }

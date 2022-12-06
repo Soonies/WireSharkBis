@@ -113,7 +113,7 @@ public class Infos {
     for (int i = 0; i < n; i++) {
       int octetSuivant = Integer.parseInt(lsNb[i]) + octetCourant;
       String data = getSubString(this.header, octetCourant, octetSuivant - 1);
-      // System.out.println(lsFields[i]+ " : " + data);
+      //System.out.println(lsFields[i]+ " : " + data);
       hash.put(lsFields[i], data);
       octetCourant = octetSuivant;
     }
