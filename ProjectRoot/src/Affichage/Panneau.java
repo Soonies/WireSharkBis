@@ -8,8 +8,10 @@ import java.util.Map;
 import Backend.Trame;
 
 public class Panneau {
+
   private List<List<String>> panneau = new ArrayList<>();
   private int lins, cols;
+  private final Integer nbFlechesAffichees;
   List<String> lsIps;
   List<Fleche> lsFleches;
 
@@ -27,6 +29,9 @@ public class Panneau {
   public Panneau(List<Trame> ls) {
     List<String> lsIps = new ArrayList<>();
     List<Fleche> lsFleches = new ArrayList<>();
+
+    this.nbFlechesAffichees = ls.size();
+ 
 
     int k = 0; // k = compteur du de l'index du prochain IP a etre ajoute a lsIps
     for (Trame t : ls) {
@@ -52,6 +57,8 @@ public class Panneau {
     initPanneau();
     rempliPanneau();
   }
+
+ 
 
   private void initPanneau() {
     int lins = 2 + 3 * lsFleches.size(), cols = 2 * lsIps.size() + 1 + 1 + 1; // 1 for id, 1 for right blank of the last
@@ -234,6 +241,8 @@ public class Panneau {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
+
+    sb.append("Graphique de flux \n ***~~~ Affichage de "+ this.nbFlechesAffichees + " echanges ~~~*** \n \n");
     for (List<String> ls : this.panneau) {
       for (String s : ls) {
         sb.append(s);

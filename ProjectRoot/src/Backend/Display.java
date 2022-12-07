@@ -16,9 +16,9 @@ import Filtre.Filtre;
 
 
 public class Display {
-    
 
-
+private  static final String DECORATION = " ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄    ▄  ▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ \n▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌▐░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌\n▐░▌       ▐░▌ ▀▀▀▀█░█▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌ ▐░▌ ▐░█▀▀▀▀▀▀▀█░▌▀▀▀▀█░█▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ \n▐░▌       ▐░▌     ▐░▌     ▐░▌       ▐░▌▐░▌          ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌▐░▌  ▐░▌       ▐░▌    ▐░▌     ▐░▌          \n▐░▌   ▄   ▐░▌     ▐░▌     ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌░▌   ▐░█▄▄▄▄▄▄▄█░▌    ▐░▌     ▐░█▄▄▄▄▄▄▄▄▄ \n▐░▌  ▐░▌  ▐░▌     ▐░▌     ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌    ▐░░░░░░░░░░▌     ▐░▌     ▐░░░░░░░░░░░▌\n▐░▌ ▐░▌░▌ ▐░▌     ▐░▌     ▐░█▀▀▀▀█░█▀▀ ▐░█▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀█░█▀▀ ▐░▌░▌   ▐░█▀▀▀▀▀▀▀█░▌    ▐░▌      ▀▀▀▀▀▀▀▀▀█░▌\n▐░▌▐░▌ ▐░▌▐░▌     ▐░▌     ▐░▌     ▐░▌  ▐░▌                    ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌     ▐░▌  ▐░▌▐░▌  ▐░▌       ▐░▌    ▐░▌               ▐░▌\n▐░▌░▌   ▐░▐░▌ ▄▄▄▄█░█▄▄▄▄ ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌      ▐░▌ ▐░▌ ▐░▌ ▐░█▄▄▄▄▄▄▄█░▌▄▄▄▄█░█▄▄▄▄  ▄▄▄▄▄▄▄▄▄█░▌\n▐░░▌     ▐░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌  ▐░▌▐░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌\n ▀▀       ▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀         ▀  ▀         ▀  ▀    ▀  ▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ \n";
+  
   public static void main(String[] args) {
     if (args.length != 2) {
       throw new IllegalArgumentException("Pas de fichier cible specifie: indiquer l'adresse du fichier cible");
@@ -46,14 +46,14 @@ public class Display {
         return "";
       }
     } catch (IOException e) {
-      System.err.println("Fichier non trouve:");
+      System.err.println("Fichier non trouve:"+ path);
       e.printStackTrace();
     }
     return "";
   }
     public static void writer(String output) {
       try{
-        PrintWriter writer = new PrintWriter("ProjectRoot/data/output.txt", "UTF-8");
+        PrintWriter writer = new PrintWriter("FlowGraph_WireSharkBis.txt", "UTF-8");
         writer.println(output);
         writer.close();
       }catch(FileNotFoundException | UnsupportedEncodingException e){
@@ -77,7 +77,7 @@ public class Display {
       }
       Panneau p = new Panneau(lsTrames);
       String out = p + "";
-      System.out.println(out);
+      System.out.println(DECORATION + "\n\n\n\n"+out);
       writer(out);
     }
   }
