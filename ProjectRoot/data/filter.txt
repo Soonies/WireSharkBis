@@ -1,1 +1,1 @@
-ipv4.ttl=115
+ipv4.ttl=63
