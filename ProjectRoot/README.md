@@ -33,7 +33,7 @@ WiresharkBis separe la tache en 3 phases:
         Elle permet l'acces a n'importe quel champs d'une trame en O(1) grace a l'usage extensif de Tables de Hachage. 
 
     - (2) Filtrage : 
-
+        
 
     - (3) Affichage : 
 
