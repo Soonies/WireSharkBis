@@ -254,13 +254,3 @@ public class Parser {
     }
   }
 }
-
-/**
- * index debut entete obsrv tcp surrement eronee
- * pcq :
- * - on test le 35 octet as flag PSH alors que on veut 47e jwncje
- * jewcekneknefkwdnjnjdnajnd da :)
- * 
- * javac Exec.java Trame.java Header.java Infos.java Parser.java Protocols.java
- * U.java
- */

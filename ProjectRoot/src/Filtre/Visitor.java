@@ -6,6 +6,7 @@ public interface Visitor<T>{
 public T visit(Not x);
 
 public T visit(Equals b);
+public T visit(Different b);
 
 public T visit(Protocol p);
 

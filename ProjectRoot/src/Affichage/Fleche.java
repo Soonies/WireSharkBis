@@ -70,7 +70,7 @@ public class Fleche {
   private static List<String> flagsUpTcp(Trame t) {
 
     if (t.getLastProtocol() != "tcp") {
-      throw new IllegalArgumentException("c pas du tcp bouffon");
+      throw new IllegalArgumentException("Le dernier protocol n'est pas TCP");
     }
 
     String[] lsFlags = "NS CWR ECE URG ACK PSH RST SYN FIN".split(" ");
@@ -97,7 +97,7 @@ public class Fleche {
     List<String> flags = flagsUpTcp(trame);
     StringBuilder sb = new StringBuilder();
 
-    sb.append(portSrc + "->" + portDst + " [");
+    sb.append("TCP : " + portSrc + "->" + portDst + " [");
 
     for (String s : flags) {
       sb.append(s + ",");
@@ -118,7 +118,7 @@ public class Fleche {
       throw new IllegalArgumentException(
           "A essayer de faire un comment HTTP sur une trame non HTTP");
     }
-    return Protocols.getHttpInfosField(id, "messageEnClair");
+    return "HTTP : " + Protocols.getHttpInfosField(id, "messageEnClair");
   }
 
   public Queue getQueue() {
