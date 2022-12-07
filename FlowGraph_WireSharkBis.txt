@@ -1,5 +1,8 @@
-Graphique de flux 
- ***~~~ Affichage de 1 echanges ~~~*** 
+GRAPHIQUE DE FLUX : 
+
+Filtre appliqué : http & tcp.portSrc=80
+
+~~~ Affichage de 1 echanges ~~~ 
  
                               128.119.245. 12               192.168. 99.199                              
 _________________________________________________________________________________________________________
