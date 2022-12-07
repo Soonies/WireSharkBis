@@ -33,6 +33,7 @@ WiresharkBis separe la tache en 3 phases:
         Elle permet l'acces a n'importe quel champs d'une trame en O(1) grace a l'usage extensif de Tables de Hachage. 
 
     - (2) Filtrage : 
+        A partir d'une d'une expression booleenne fournie dans un fichier texte, le visualisateur cree l'arbre syntaxique correspondant. Il est ensuite capable de selectionner les ``Trame``   
         
 
     - (3) Affichage : 

@@ -77,6 +77,9 @@ private  static final String DECORATION = " ▄         ▄  ▄▄▄▄▄▄�
         }
       }
       Panneau p = new Panneau(lsTrames);
+      if(args.equals("")){
+        args = "Pas de filtre";
+      }
       String out = "GRAPHIQUE DE FLUX : \n\nFiltre appliqué : "+args+"\n\n"+p;
       System.out.println(DECORATION + "\n\n"+out);
       writer(out);
