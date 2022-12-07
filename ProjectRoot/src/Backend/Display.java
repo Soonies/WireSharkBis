@@ -51,6 +51,7 @@ private  static final String DECORATION = " ▄         ▄  ▄▄▄▄▄▄�
     }
     return "";
   }
+
     public static void writer(String output) {
       try{
         PrintWriter writer = new PrintWriter("FlowGraph_WireSharkBis.txt", "UTF-8");
@@ -76,8 +77,8 @@ private  static final String DECORATION = " ▄         ▄  ▄▄▄▄▄▄�
         }
       }
       Panneau p = new Panneau(lsTrames);
-      String out = p + "";
-      System.out.println(DECORATION + "\n\n\n\n"+out);
+      String out = "GRAPHIQUE DE FLUX : \n\nFiltre appliqué : "+args+"\n\n"+p;
+      System.out.println(DECORATION + "\n\n"+out);
       writer(out);
     }
   }

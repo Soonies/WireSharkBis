@@ -242,7 +242,7 @@ public class Panneau {
   public String toString() {
     StringBuilder sb = new StringBuilder();
 
-    sb.append("Graphique de flux \n ***~~~ Affichage de "+ this.nbFlechesAffichees + " echanges ~~~*** \n \n");
+    sb.append("~~~ Affichage de "+ this.nbFlechesAffichees + " echanges ~~~ \n \n");
     for (List<String> ls : this.panneau) {
       for (String s : ls) {
         sb.append(s);
