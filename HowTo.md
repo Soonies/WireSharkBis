@@ -95,10 +95,10 @@ Expression  | Expression WireSharkBis
 tcp.srcPort == 80 | tcp.portSrc=80
 tcp && http | tcp & http
 eth.dst == 00:00:5e:00:53:00 | ethernet.macDst=00:00:5e:00:53:00
-(ip.src == 123.123.123.123 \|\| ip.dst != 255.255.255.255) && ( http \|\| tcp) | ( ipv4.ipSrc=123.123.123.123 \| ipv4.ipDst!255.255.255.255 ) & ( http \| tcp )
+(ip.ttl == 16 \|\| ip.dst != 255.255.255.255) && ( http \|\| tcp) | ( ipv4.ttl=16 \| ipv4.ipDst!255.255.255.255 ) & ( http \| tcp )
 
 
-Voici toute la liste des champs que vous pourrez éxaminer. Simplement faire suivre le protocole concerné d'un point, puis du nom du champ à observer. 
+Voici toute la liste des champs que vous pourrez éxaminer. Simplement faire suivre le protocole concerné d'un point, puis du nom du champ à observer. Exemple :  `tcp.CWR=1`  pour tester si le flag `CWR` de l'entete TCP est levé.
 ```       
 ├── ethernet.
 │   ├── macDst
