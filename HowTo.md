@@ -2,7 +2,7 @@
 ## JOACHIM  Julien
 ## SOARES Robin
 
-Tutoriel d'utilisaoin du projet WiresharkBis, visualisateur de flot de traffic en lignes de commandes.
+Tutoriel d'utilisatin du projet WiresharkBis, visualisateur de flot de traffic en lignes de commandes.
 
 Ce document donne :
     - Les instructions d'utilisation de WiresharkBis
@@ -16,7 +16,7 @@ WiresharkBis est un visualisateur de flot de traffic intenet s'executant en lign
 Voici la procedure a suivre pour l'utiliser:
     
 - 1 - Telecharger le projet WiresharkBis_JOACHIM_SOARES.zip et le decompresser.
-- 2 - Recuperer l'archive `Start.jar` à la racine du fichier decompressé, et la placer dans le dossier de votre choix. Elle peut aussi rester dans le dossier original.
+- 2 - Recuperer l'archive `Start.jar` à l'emplacement `./ProjectRoot/`, avec `.` etant la racine du fichier decompressé, et la placer dans le dossier de votre choix. Elle peut aussi rester dans le dossier original.
 - 3 - Se deplacer à l'emplacement du fichier `Start.jar` sur le terminal. 
 - 4 - Enfin, executer la commande :
 
@@ -64,8 +64,8 @@ WiresharkBIS permet l'utilisation d'un filtre sous forme de formule booleenne. C
 Si il n'y a pas de filtre à appliquer sur le visualisateur, il suffit de donner un fichier .txt vide.  
 Si un filtre est nécessaire, il suffit d'ecrire son expression sur une ligne dans le fichier .txt qui sera donné en argument.  
 
-L'expression de celui ci est une formule booléenne, dont les opérateurs à utiliser sont listes plus bas. 
-
+L'expression de celui ci est une formule booléenne, dont les opérateurs à utiliser sont listes plus bas.  
+Tout expression booleenne legale, utilisant tous les champs listes tout en bas de ce fichier fonctionnera!  
 Cependant, l'opérateur NOT n'est pas implémenté. *(Utiliser la loi de De Morgan!)*
 
 ### Symboles utilises
