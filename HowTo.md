@@ -15,7 +15,8 @@ Consulter le fichier `README.md` pour la description du projet et des fonctionna
 WiresharkBis est un visualisateur de flot de traffic intenet s'executant en ligne de commande.
 
 Voici la procedure a suivre pour l'utiliser:
-    
+
+- 0 - Avoir prealablement installe Java JDK version 19 (au moins) 
 - 1 - Telecharger le projet WiresharkBis_JOACHIM_SOARES.zip et le decompresser.
 - 2 - Recuperer l'archive `Start.jar` à l'emplacement `./ProjectRoot/`, avec `.` etant la racine du fichier decompressé, et la placer dans le dossier de votre choix. Elle peut aussi rester dans le dossier original.
 - 3 - Se deplacer à l'emplacement du fichier `Start.jar` sur le terminal. 
